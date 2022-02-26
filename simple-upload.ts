@@ -1,9 +1,4 @@
-import { Server } from "https://deno.land/std@0.127.0/http/server.ts";
-import { ensureDir } from "https://deno.land/std@0.127.0/fs/mod.ts";
-import {
-  Form,
-  multiParser,
-} from "https://deno.land/x/multiparser@0.114.0/mod.ts";
+import { ensureDir, Form, multiParser, Server } from "./deps.ts";
 
 const PORT = 8000;
 
