@@ -1,3 +1,3 @@
 
 serve:
-	deno run --allow-net simple-upload.ts
+	deno run --allow-net --allow-write simple-upload.ts
