@@ -1,13 +1,21 @@
 import { Server } from "https://deno.land/std@0.127.0/http/server.ts";
 import { ensureDir } from "https://deno.land/std@0.127.0/fs/mod.ts";
-
 import {
   Form,
   multiParser,
 } from "https://deno.land/x/multiparser@0.114.0/mod.ts";
 
+const PORT = 8000;
+
+if (Deno.args.length != 1) {
+  console.log(`Usage: simple-upload.ts ./output-dir`);
+  Deno.exit();
+}
+
+const OUTPUT_DIR = Deno.args[0];
+
 const server = new Server({
-  port: 8000,
+  port: PORT,
   handler: async (req) => {
     console.info(`${req.method} ${req.url}`);
     if (req.method === "POST") {
@@ -41,6 +49,8 @@ const server = new Server({
   // onError: (e) => console.error(`DENO HTTP onError!`, e),
 });
 
+console.log(`listening on :${PORT}, writing files to ${OUTPUT_DIR}`);
+
 await server.listenAndServe();
 
 async function writeFiles(parsed: Form) {
@@ -48,11 +58,11 @@ async function writeFiles(parsed: Form) {
     ? parsed.files.files
     : [parsed.files.files];
 
-  await ensureDir("./files");
+  await ensureDir(OUTPUT_DIR);
 
   for (const file of files) {
-    const filename = `./files/${file.filename}`;
-    console.log(`writing ${filename} (${file.size})..`);
+    const filename = `${OUTPUT_DIR}/${file.filename}`;
+    console.log(`received ${filename} (${file.size})..`);
     await Deno.writeFile(filename, file.content);
   }
 }
