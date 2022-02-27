@@ -1,0 +1,8 @@
+{{#if headerMessage}}
+  <div>{{headerMessage}}</div>
+{{/if}}
+<h1>Simple Upload</h1>
+<form action="/upload" enctype="multipart/form-data" method="post">
+  <div><input type="file" name="files" multiple /></div>
+  <input type="submit" value="Upload" />
+</form>

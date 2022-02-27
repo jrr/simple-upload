@@ -9,5 +9,8 @@
   },
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[handlebars]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

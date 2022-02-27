@@ -17,18 +17,8 @@ function respond(s: string) {
   });
 }
 const handlebarsEngine = engineFactory.getHandlebarsEngine();
+const template = await Deno.readTextFile("src/page.hbs");
 const renderPage = (props: { headerMessage?: string }) => {
-  const template = `
-  {{#if headerMessage}}
-  <div>{{headerMessage}}</div>
-  {{/if}}
-    <h1>Simple Upload</h1>
-    <form action="/upload" enctype="multipart/form-data" method="post">
-      <div><input type="file" name="files" multiple/></div>
-      <input type="submit" value="Upload" />
-    </form>
-`;
-
   return respond(handlebarsEngine(template, props));
 };
 
