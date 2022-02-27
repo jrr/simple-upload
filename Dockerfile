@@ -4,11 +4,11 @@ EXPOSE 8000
 
 WORKDIR /app
 
-COPY deps.ts .
+COPY src/deps.ts src/deps.ts
 
-RUN deno cache deps.ts
+RUN deno cache src/deps.ts
 
-COPY simple-upload.ts .
+COPY src .
 
 VOLUME /data
 
