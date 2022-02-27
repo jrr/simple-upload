@@ -17,9 +17,12 @@ function respond(s: string) {
   });
 }
 const handlebarsEngine = engineFactory.getHandlebarsEngine();
+
+// CSS in a separate file to play nicely with code formatter.
+const css = await Deno.readTextFile("src/style.css");
 const template = await Deno.readTextFile("src/page.hbs");
-const renderPage = (props: { headerMessage?: string }) => {
-  return respond(handlebarsEngine(template, props));
+const renderPage = (props: { responseMessage?: string }) => {
+  return respond(handlebarsEngine(template, { ...props, css }));
 };
 
 const server = new Server({
@@ -30,9 +33,9 @@ const server = new Server({
       const parsed = await multiParser(req);
       if (parsed) {
         const numFiles = await writeFiles(parsed);
-        return renderPage({ headerMessage: `Uploaded ${numFiles} files.` });
+        return renderPage({ responseMessage: `Uploaded ${numFiles} files.` });
       } else {
-        return renderPage({ headerMessage: "Parse error." });
+        return renderPage({ responseMessage: "Parse error." });
       }
     }
     return renderPage({});

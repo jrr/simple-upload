@@ -1,8 +1,26 @@
-{{#if headerMessage}}
-  <div>{{headerMessage}}</div>
-{{/if}}
-<h1>Simple Upload</h1>
-<form action="/upload" enctype="multipart/form-data" method="post">
-  <div><input type="file" name="files" multiple /></div>
-  <input type="submit" value="Upload" />
-</form>
+<html class="argyle">
+
+  <head>
+    <style>{{{css}}}</style>
+  </head>
+
+  <body class="container">
+    <div class="box">
+      <h1>Simple Upload</h1>
+
+      <form action="/upload" enctype="multipart/form-data" method="post">
+        <input type="file" name="files" multiple />
+        <br />
+        <br />
+        <input type="submit" value="Upload" />
+      </form>
+
+      {{#if responseMessage}}
+        <div class="responseMessage">
+          {{responseMessage}}
+        </div>
+      {{/if}}
+    </div>
+  </body>
+
+</html>

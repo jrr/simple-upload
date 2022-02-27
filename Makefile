@@ -2,6 +2,9 @@
 serve:
 	deno run --allow-net --allow-read --allow-write src/simple-upload.ts ./files
 
+hotserve:
+	denon run --allow-net --allow-read --allow-write src/simple-upload.ts ./files
+
 docker-build:
 	docker build -t simple-upload .
 
