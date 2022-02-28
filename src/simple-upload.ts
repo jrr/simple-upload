@@ -18,11 +18,12 @@ function respond(s: string) {
 }
 const handlebarsEngine = engineFactory.getHandlebarsEngine();
 
-// CSS in a separate file to play nicely with code formatter.
+// CSS, JS in separate files to play nicely with code formatter.
 const css = await Deno.readTextFile("src/style.css");
+const js = await Deno.readTextFile("src/page.js");
 const template = await Deno.readTextFile("src/page.hbs");
 const renderPage = (props: { responseMessage?: string }) => {
-  return respond(handlebarsEngine(template, { ...props, css }));
+  return respond(handlebarsEngine(template, { ...props, css, js }));
 };
 
 const server = new Server({

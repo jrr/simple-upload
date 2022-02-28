@@ -2,13 +2,19 @@
 
   <head>
     <style>{{{css}}}</style>
+    <script>{{{js}}}</script>
   </head>
 
   <body class="container">
     <div class="box">
       <h1>Simple Upload</h1>
 
-      <form action="/upload" enctype="multipart/form-data" method="post">
+      <form
+        action="/upload"
+        enctype="multipart/form-data"
+        method="post"
+        id="upload-form"
+      >
         <input type="file" name="files" multiple />
         <br />
         <br />
