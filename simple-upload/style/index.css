@@ -130,3 +130,10 @@ button {
   border: 1px solid black;
   margin: 1rem;
 }
+
+.progress-bar-outer {
+  border: 1px solid black;
+}
+.progress-bar-inner {
+  background: black;
+}
