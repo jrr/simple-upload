@@ -14,4 +14,4 @@ docker-build:
 	docker build -t simple-upload .
 
 docker-run:
-	docker run -it --init -p 8080:8080 -v $(shell pwd)/files-docker:/data -e OUTPUT_DIR=/data simple-upload
+	docker run -it --init -p 8080:8080 -v $(shell pwd)/files-docker:/data simple-upload

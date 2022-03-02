@@ -2,6 +2,8 @@ FROM denoland/deno
 
 EXPOSE 8080
 
+ENV OUTPUT_DIR=/data
+
 WORKDIR /app
 
 COPY aleph-app/deps.ts deps.ts
