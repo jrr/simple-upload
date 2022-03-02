@@ -1,66 +1,7 @@
-@import url("./reset.css");
-
-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.page h1 {
+* {
   margin: 0;
-  line-height: 1.5;
-  font-size: 18px;
-  font-weight: 400;
-  text-align: center;
-  color: #000;
+  font-size: 103%;
 }
-
-.page h1 strong {
-  font-weight: 700;
-}
-
-.page p {
-  margin: 0;
-  line-height: 1.5;
-  text-align: center;
-  color: #333;
-}
-
-.logo + p {
-  margin-top: 6px;
-}
-
-.links span,
-.links a {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.links span {
-  color: #999;
-}
-
-.links span::after {
-  content: "·";
-}
-
-.links a {
-  margin: 0 9px;
-  color: #666;
-  text-decoration: none;
-  transition: color 0.15s ease-in;
-}
-
-.links a:hover {
-  color: #000;
-}
-/* .page .copyinfo {
-  margin-top: 30px;
-  font-size: 14px;
-   color: #999; 
-} */
-
 html {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -100,8 +41,11 @@ html {
   background-size: 70px 120px;
 }
 
-input {
-  font-size: larger;
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .container {
@@ -113,27 +57,16 @@ input {
 
 .box {
   border-radius: 10px;
-  border: 1px solid black;
   text-align: center;
   background-color: rgb(141, 139, 133);
   padding: 1rem;
-}
-
-.responseMessage {
-  font-style: italic;
-}
-
-input {
-  border: 1px solid black;
-}
-button {
-  border: 1px solid black;
-  margin: 1rem;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .progress-bar-outer {
   border: 1px solid black;
 }
 .progress-bar-inner {
-  background: black;
+  background: #555;
 }

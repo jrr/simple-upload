@@ -92,67 +92,71 @@ const Home: React.FC = () => {
   const responseMessage = false;
 
   return (
-    <div className="page">
-      <head>
-        <title>Simple Upload</title>
-        <link rel="stylesheet" href="../style/index.css" />
-      </head>
-      <section id="upload">
-        <div className="full-width">
-          <h1>Simple Upload</h1>
-        </div>
-
-        <br />
-
-        <input
-          id="file-input"
-          type="file"
-          name="files"
-          multiple
-          onInput={onInput}
-          ref={fileInputRef}
-        />
-
-        <br />
-        <br />
-
-        <button onClick={submitForm} className="btn" id="submit-button">
-          Submit
-        </button>
-
-        <br />
-
-        {selectedFiles.status == "files-selected" && (
+    <div className="container">
+      <div className="box">
+        <head>
+          <title>Simple Upload</title>
+          <link rel="stylesheet" href="../style/index.css" />
+        </head>
+        <section id="upload">
           <div className="full-width">
-            <SelectedFiles files={selectedFiles.files} />
+            <h1>Simple Upload</h1>
           </div>
-        )}
 
-        <br />
+          <br />
 
-        {responseMessage && (
-          <div className="responseMessage"> {{ responseMessage }} </div>
-        )}
-        {uploadState.status == "in-progress" && (
-          <>
-            <div className="upload-status">{uploadState.percentage}</div>
-            <div>
-              {uploadState.loaded} / {uploadState.total}
+          <input
+            id="file-input"
+            type="file"
+            name="files"
+            multiple
+            onInput={onInput}
+            ref={fileInputRef}
+          />
+
+          <br />
+          <br />
+
+          <button onClick={submitForm} className="btn" id="submit-button">
+            Submit
+          </button>
+
+          <br />
+          <br />
+
+          {selectedFiles.status == "files-selected" && (
+            <div className="full-width">
+              <SelectedFiles files={selectedFiles.files} />
             </div>
+          )}
 
-            <div className="progress-bar-outer">
-              <div
-                className="progress-bar-inner"
-                style={{
-                  height: "24px",
-                  width: uploadState.percentage,
-                }}
-              ></div>
-            </div>
-          </>
-        )}
-      </section>
-      <hr />
+          <br />
+
+          {responseMessage && (
+            <div className="responseMessage"> {{ responseMessage }} </div>
+          )}
+
+          {uploadState.status == "in-progress" && (
+            <>
+              <div className="upload-status">{uploadState.percentage}</div>
+
+              <div className="progress-bar-outer">
+                <div
+                  className="progress-bar-inner"
+                  style={{
+                    height: "24px",
+                    width: uploadState.percentage,
+                  }}
+                ></div>
+              </div>
+
+              <div>
+                {uploadState.loaded} / {uploadState.total}
+              </div>
+            </>
+          )}
+        </section>
+      </div>
     </div>
   );
 };
@@ -163,16 +167,18 @@ const SelectedFiles: React.FC<{ files: File[] }> = ({ files }) => {
     <div>
       {files.map((f) => (
         <div className="file-info" key={f.name}>
-          <div>{f.name}</div>
-          {/* <div>{f.type}</div> */}
           <div>
+            {f.name} ({summarizeFileSize(f.size)})
+          </div>
+          {/* <div>{f.type}</div> */}
+          {/* <div>
             {summarizeFileSize(f.size)}
             &nbsp; &nbsp; &nbsp; &nbsp;
             {format(
               new Date(f.lastModified),
               "{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}"
             )}
-          </div>
+          </div> */}
         </div>
       ))}
     </div>
