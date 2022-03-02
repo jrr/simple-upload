@@ -1,7 +1,7 @@
 import type { APIHandler } from "aleph/types.d.ts";
 import { ensureDir, Form, multiParser } from "../../deps.ts";
 
-const OUTPUT_DIR = "./files";
+const OUTPUT_DIR = Deno.env.get("OUTPUT_DIR") || "../files";
 
 export const handler: APIHandler = async ({ request, response, data }) => {
   const parsed = await multiParser(request);
