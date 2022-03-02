@@ -10,7 +10,7 @@ Image is published to [Docker Hub](https://hub.docker.com/r/jrrr/simple-upload).
 ## Try it
 
 ```
-docker run -it --init -p 8000:8000 -v $PWD/uploaded-files:/data jrrr/simple-upload
+docker run -it --init -p 8080:8080 -v $PWD/uploaded-files:/data jrrr/simple-upload
 ```
 
 For local development check out the Makefile.

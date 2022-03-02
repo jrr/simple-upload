@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+  font-size: 103%;
+}
 html {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -37,8 +41,11 @@ html {
   background-size: 70px 120px;
 }
 
-input {
-  font-size: larger;
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .container {
@@ -53,8 +60,13 @@ input {
   text-align: center;
   background-color: rgb(141, 139, 133);
   padding: 1rem;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.responseMessage {
-  font-style: italic;
+.progress-bar-outer {
+  border: 1px solid black;
+}
+.progress-bar-inner {
+  background: #555;
 }

@@ -1,15 +1,19 @@
 FROM denoland/deno
 
-EXPOSE 8000
+EXPOSE 8080
+
+ENV OUTPUT_DIR=/data
 
 WORKDIR /app
 
-COPY src/deps.ts src/deps.ts
+COPY aleph-app/deps.ts deps.ts
 
-RUN deno cache src/deps.ts
+RUN deno cache deps.ts
 
-COPY src src
+COPY aleph-app .
 
 VOLUME /data
 
-CMD ["run", "--allow-net", "--allow-read", "--allow-write", "src/simple-upload.ts", "/data"]
+RUN deno run --allow-all https://deno.land/x/aleph@v0.3.0-beta.19/cli.ts build
+
+CMD ["run", "--allow-run", "--allow-env", "--allow-net", "--allow-read", "--allow-write", "https://deno.land/x/aleph@v0.3.0-beta.19/cli.ts", "start"]
