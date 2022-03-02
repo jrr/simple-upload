@@ -1,28 +1,28 @@
-import React, { useCallback, useState } from "react";
-
+import React, { useCallback, useRef, useState } from "react";
+import { format } from "../lib/format-date.tsx";
 
 type UploadState =
   | {
-    status: "empty";
-  }
+      status: "empty";
+    }
   | {
-    status: "in-progress";
-    loaded: number;
-    total: number;
-    percentage: string;
-  }
+      status: "in-progress";
+      loaded: number;
+      total: number;
+      percentage: string;
+    }
   | {
-    status: "error";
-    error: string;
-  };
+      status: "error";
+      error: string;
+    };
 type SelectedFiles =
   | {
-    status: "none-selected";
-  }
+      status: "none-selected";
+    }
   | {
-    status: "files-selected";
-    files: File[];
-  };
+      status: "files-selected";
+      files: File[];
+    };
 
 const Home: React.FC = () => {
   const [uploadState, setUploadState] = useState<UploadState>({
@@ -31,6 +31,8 @@ const Home: React.FC = () => {
   const [selectedFiles, setSelectedFiles] = useState<SelectedFiles>({
     status: "none-selected",
   });
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const progressUpdate = useCallback(
     (e: ProgressEvent<XMLHttpRequestEventTarget>) => {
       setUploadState({
@@ -51,8 +53,19 @@ const Home: React.FC = () => {
 
   const submitForm = useCallback(() => {
     console.log("submitting programmatically with XHR()..");
-    const form = document.getElementById("upload-form") as HTMLFormElement;
-    const formData = new FormData(form);
+    // const form = document.getElementById("upload-form") as HTMLFormElement;
+    const formData = new FormData();
+
+    if (fileInputRef.current && fileInputRef.current.files) {
+      const files = fileInputRef.current.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        formData.append("files", file);
+      }
+    } else {
+      console.error("no <input> ref");
+    }
+
     const xhr = new XMLHttpRequest();
 
     xhr.upload.addEventListener("loadstart", progressUpdate);
@@ -61,7 +74,7 @@ const Home: React.FC = () => {
 
     xhr.upload.addEventListener("error", handleError);
     xhr.upload.addEventListener("abort", handleError);
-    xhr.open("POST", form.action);
+    xhr.open("POST", "/api/upload", true);
     xhr.send(formData);
   }, []);
   const onInput: React.FormEventHandler<HTMLInputElement> = (e) => {
@@ -84,27 +97,39 @@ const Home: React.FC = () => {
         <title>Simple Upload</title>
         <link rel="stylesheet" href="../style/index.css" />
       </head>
-      <hr />
-      <div className="box">
-        <h1>Simple Upload</h1>
+      <section id="upload">
+        <div className="full-width">
+          <h1>Simple Upload</h1>
+        </div>
 
         <br />
-        <form
-          action="/api/upload"
-          encType="multipart/form-data"
-          method="post"
-          id="upload-form"
-        >
-          {/* todo: replace this with custom button.
-          can we get the filename(s) programmatically? */}
-          <input type="file" name="files" multiple onInput={onInput} />
-          <br />
-        </form>
-        <button onClick={submitForm}>Submit (XHR)</button>
+
+        <input
+          id="file-input"
+          type="file"
+          name="files"
+          multiple
+          onInput={onInput}
+          ref={fileInputRef}
+        />
+
+        <br />
+        <br />
+
+        <button onClick={submitForm} className="btn" id="submit-button">
+          Submit
+        </button>
+
+        <br />
 
         {selectedFiles.status == "files-selected" && (
-          <SelectedFiles files={selectedFiles.files} />
+          <div className="full-width">
+            <SelectedFiles files={selectedFiles.files} />
+          </div>
         )}
+
+        <br />
+
         {responseMessage && (
           <div className="responseMessage"> {{ responseMessage }} </div>
         )}
@@ -126,7 +151,7 @@ const Home: React.FC = () => {
             </div>
           </>
         )}
-      </div>
+      </section>
       <hr />
     </div>
   );
@@ -137,44 +162,32 @@ const SelectedFiles: React.FC<{ files: File[] }> = ({ files }) => {
   return (
     <div>
       {files.map((f) => (
-        <li key={f.name}>
-          {f.name} {f.type} {f.size}{" "}
-          {format(new Date(f.lastModified), "{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")}
-        </li>
+        <div className="file-info" key={f.name}>
+          <div>{f.name}</div>
+          {/* <div>{f.type}</div> */}
+          <div>
+            {summarizeFileSize(f.size)}
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            {format(
+              new Date(f.lastModified),
+              "{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}"
+            )}
+          </div>
+        </div>
       ))}
     </div>
   );
 };
+function summarizeFileSize(n: number) {
+  if (n < 1000000) {
+    return `${Math.floor(n / 1000)}K`;
+  }
 
-/*
-from https://deno.land/x/light_date@1.2.0/index.ts .
-(importing it wasn't working)
- */
-export const format = (date: Date, exp: string): string =>
-  exp.replace(/\\?{.*?}/g, (key) => {
-    if (key.startsWith("\\")) {
-      return key.slice(1);
-    }
-    switch (key) {
-      case "{yyyy}":
-        return `${date.getFullYear()}`;
-      case "{yy}":
-        return `${date.getFullYear()}`.slice(-2);
-      case "{MM}":
-        return `${date.getMonth() + 1}`.padStart(2, "0");
-      case "{dd}":
-        return `${date.getDate()}`.padStart(2, "0");
-      case "{HH}":
-        return `${date.getHours()}`.padStart(2, "0");
-      case "{mm}":
-        return `${date.getMinutes()}`.padStart(2, "0");
-      case "{ss}":
-        return `${date.getSeconds()}`.padStart(2, "0");
-      case "{SSS}":
-        return `${date.getMilliseconds()}`.padStart(3, "0");
-      default:
-        return "";
-    }
-  });
+  if (n < 10 * 1000000) {
+    return `${(n / 1000000).toFixed(1)}M`;
+  }
+
+  return `${(n / 1000000).toFixed(0)}M`;
+}
 
 export default Home;

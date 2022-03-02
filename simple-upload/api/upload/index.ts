@@ -5,7 +5,6 @@ const OUTPUT_DIR = "./files";
 
 export const handler: APIHandler = async ({ request, response, data }) => {
   const parsed = await multiParser(request);
-  console.log("upload controller", request, data);
   if (parsed) {
     const numFiles = await writeFiles(parsed);
     response.json({ outcome: "success", numFiles });
